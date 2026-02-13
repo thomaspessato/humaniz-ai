@@ -1,24 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getToken } from "next-auth/jwt";
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const token = await getToken({
-    req: request,
-    secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
-  });
+  // Verifica se existe cookie de sessão (sem tentar decriptar)
+  const sessionCookie =
+    request.cookies.get("__Secure-authjs.session-token") ??
+    request.cookies.get("authjs.session-token") ??
+    request.cookies.get("__Secure-next-auth.session-token") ??
+    request.cookies.get("next-auth.session-token");
 
-  const isLoggedIn = !!token;
-
-  // Proteger rotas do dashboard
-  if (pathname.startsWith("/dashboard") && !isLoggedIn) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  const hasSession = !!sessionCookie?.value;
 
   // Redirecionar usuários logados para dashboard se tentarem acessar login/register
-  if (isLoggedIn && (pathname === "/login" || pathname === "/register")) {
+  if (hasSession && (pathname === "/login" || pathname === "/register")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
@@ -26,5 +22,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/register"],
+  matcher: ["/login", "/register"],
 };
