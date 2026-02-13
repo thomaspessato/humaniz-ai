@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { generateVerificationToken } from "@/lib/tokens";
+import { sendVerificationEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -34,6 +36,14 @@ export async function POST(req: NextRequest) {
         trialEndsAt,
       },
     });
+
+    // Enviar email de verificação (não bloquear registro se falhar)
+    try {
+      const token = await generateVerificationToken(email);
+      await sendVerificationEmail(email, token.token);
+    } catch (emailError) {
+      console.error("Erro ao enviar email de verificação:", emailError);
+    }
 
     return NextResponse.json(
       { id: user.id, email: user.email, name: user.name },
