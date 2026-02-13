@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ── Auth Models ──────────────────────────────────────────
@@ -34,12 +35,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String? @db.Text
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -71,9 +72,9 @@ model Post {
   userId      String
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  originalText  String
-  rewrittenText String?
-  finalText     String?
+  originalText  String   @db.Text
+  rewrittenText String?  @db.Text
+  finalText     String?  @db.Text
 
   humanScore    Float?
   clarityScore  Float?
@@ -110,7 +111,7 @@ model PostVersion {
   postId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  text      String
+  text      String   @db.Text
   variant   String   @default("A")
   score     Float?
 

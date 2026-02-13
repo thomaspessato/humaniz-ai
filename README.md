@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🟠 Humaniz.ai
 
-## Getting Started
+**Textos mais humanos para LinkedIn, powered by AI.**
 
-First, run the development server:
+Humaniz.ai transforma rascunhos genéricos em posts autênticos e envolventes para LinkedIn. Usando IA avançada (GPT-4o-mini), o sistema reescreve seu conteúdo mantendo sua voz — com scores de humanização, clareza e engajamento.
+
+## ✨ Features
+
+- **Editor com IA** — Cole seu rascunho e receba 3 versões humanizadas com scores
+- **Dashboard completo** — Métricas, posts recentes, ações rápidas
+- **Agendamento** — Agende posts para publicação futura
+- **Analytics** — Acompanhe impressões, likes, comentários e engagement rate
+- **Autenticação** — Registro/login com email e senha (NextAuth)
+- **Design profissional** — Interface inspirada em products como Firecrawl, com animações suaves
+
+## 🛠 Tech Stack
+
+| Camada | Tecnologia |
+|--------|-----------|
+| Framework | Next.js 16 (App Router) |
+| Linguagem | TypeScript |
+| Estilo | Tailwind CSS 4 |
+| Banco | PostgreSQL (Neon) |
+| ORM | Prisma 6 |
+| Auth | NextAuth v5 (beta) |
+| IA | OpenAI GPT-4o-mini |
+| Deploy | Vercel |
+
+## 🚀 Setup Local
 
 ```bash
+# Clone o repositório
+git clone https://github.com/thomaspessato/humaniz-ai.git
+cd humaniz-ai
+
+# Instale dependências
+npm install
+
+# Configure variáveis de ambiente
+cp .env.example .env
+# Edite .env com suas credenciais
+
+# Push do schema para o banco
+npx prisma db push
+
+# (Opcional) Seed com dados de teste
+npm run db:seed
+
+# Inicie o servidor
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Estrutura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── api/          # Routes de API (auth, register, rewrite, posts)
+│   ├── dashboard/    # Rotas protegidas (editor, schedule, analytics)
+│   ├── login/        # Página de login
+│   ├── register/     # Página de registro
+│   └── page.tsx      # Landing page
+├── components/
+│   ├── landing/      # Componentes da landing (reveal, demo, faq, typing)
+│   └── ui/           # Design system (button, input, textarea, sidebar)
+├── lib/              # Auth config, AI service, Prisma client, utils
+└── middleware.ts      # Route protection
+```
 
-## Learn More
+## 📄 License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

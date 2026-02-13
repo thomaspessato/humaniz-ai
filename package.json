@@ -1,14 +1,16 @@
 {
   "name": "humaniz.ai",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "Humanize seus textos do LinkedIn com IA — escreva conteúdo autêntico que engaja.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "postinstall": "prisma generate",
     "db:seed": "node prisma/seed.js",
-    "db:reset": "npx prisma migrate reset --force",
+    "db:push": "npx prisma db push",
     "db:studio": "npx prisma studio"
   },
   "prisma": {
