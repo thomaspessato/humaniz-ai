@@ -144,7 +144,7 @@ Ex: Estou feliz em anunciar que nossa empresa atingiu a marca de 10.000 clientes
             />
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
+              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3" role="alert" aria-live="polite">
                 {error}
               </div>
             )}
@@ -240,7 +240,7 @@ Ex: Estou feliz em anunciar que nossa empresa atingiu a marca de 10.000 clientes
                     Agendar publicação
                   </h3>
                   {error && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
+                    <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3" role="alert" aria-live="polite">
                       {error}
                     </div>
                   )}
