@@ -45,6 +45,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Check if user has LinkedIn connected when scheduling a post
+    if (scheduledAt) {
+      const linkedInAccount = await prisma.account.findFirst({
+        where: {
+          userId: session.user.id,
+          provider: "linkedin",
+        },
+      });
+
+      if (!linkedInAccount) {
+        return NextResponse.json(
+          { error: "LinkedIn não conectado. Você precisa conectar sua conta do LinkedIn para agendar posts." },
+          { status: 403 }
+        );
+      }
+    }
+
     const status = scheduledAt ? "SCHEDULED" : finalText ? "READY" : "DRAFT";
 
     const post = await prisma.post.create({

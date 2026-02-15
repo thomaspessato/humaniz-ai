@@ -102,13 +102,16 @@ export function PostEditor() {
         body: JSON.stringify(body),
       });
 
-      if (!res.ok) throw new Error("Erro ao salvar");
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Erro ao salvar");
+      }
 
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
       setScheduling(false);
-    } catch {
-      setError("Erro ao salvar o post");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao salvar o post");
     } finally {
       setSaving(false);
     }
@@ -141,7 +144,7 @@ Ex: Estou feliz em anunciar que nossa empresa atingiu a marca de 10.000 clientes
             />
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3">
+              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3" role="alert" aria-live="polite">
                 {error}
               </div>
             )}
@@ -236,6 +239,11 @@ Ex: Estou feliz em anunciar que nossa empresa atingiu a marca de 10.000 clientes
                   <h3 className="text-sm font-medium text-gray-700">
                     Agendar publicação
                   </h3>
+                  {error && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3" role="alert" aria-live="polite">
+                      {error}
+                    </div>
+                  )}
                   <input
                     type="datetime-local"
                     value={scheduleDate}
